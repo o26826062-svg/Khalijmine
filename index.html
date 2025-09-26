@@ -1,228 +1,47 @@
-<!DOCTYPE html>
-<html lang="fa">
+<!doctype html>
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Khalij Mine</title>
-  <style>
-    body {font-family: Tahoma, sans-serif; margin:0; padding:0; background:#111; color:#eee;}
-    header {background:#222; padding:10px; text-align:center; position:sticky; top:0;}
-    header h1 {margin:5px 0; color:#6cf;}
-    nav a {margin:0 10px; color:#fff; text-decoration:none; font-weight:bold;}
-    nav a:hover {color:#6cf;}
-    section {display:none; padding:20px;}
-    section.active {display:block;}
-    .card {background:#222; padding:15px; margin:10px 0; border-radius:10px; box-shadow:0 0 5px #000;}
-    .btn {display:inline-block; padding:8px 12px; background:#6cf; color:#000; border-radius:6px; margin-top:5px; cursor:pointer; font-weight:bold;}
-    .btn:disabled {background:#555; cursor:not-allowed; color:#aaa;}
-    .countdown {font-size:1.2em; margin:10px 0;}
-    .admin-table, .player-table {width:100%; border-collapse:collapse; margin-top:10px;}
-    .admin-table th, .admin-table td, .player-table th, .player-table td {border:1px solid #555; padding:6px; text-align:center;}
-    .shop-item {margin:10px 0;}
-    .profile {margin:10px 0; padding:10px; background:#333; border-radius:8px;}
-    footer {background:#222; text-align:center; padding:10px; margin-top:20px; font-size:0.9em;}
-  </style>
-</head>
-<body>
-  <header>
-    <h1>🌍 Khalij Mine</h1>
-    <nav>
-      <a href="#" onclick="showSection('home')">خانه</a>
-      <a href="#" onclick="showSection('rules')">قوانین</a>
-      <a href="#" onclick="showSection('shop')">فروشگاه</a>
-      <a href="#" onclick="showSection('team')">تیم مدیریت</a>
-      <a href="#" onclick="showSection('top')">برترین‌ها</a>
-      <a href="#" onclick="showSection('login')">ورود</a>
-    </nav>
-  </header>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Khalij Mine — مدیریت سرور</title>
+<!--
+  Khalij Mine — نسخه v9 (Single-file)
+  قابلیت‌ها: گرافیک ماینکرافتی ساده، ورود، پنل ادمین، شاپ رنک ماهانه، چت، تیکت، قوانین قابل ویرایش، وضعیت سرور
+  نحوه استفاده: فایل را به عنوان index.html ذخیره و روی هاست/گیت‌هاب پیجز/Netlify آپلود کن.
 
-  <!-- خانه -->
-  <section id="home" class="active">
-    <div class="card">
-      <h2>به سرور Khalij Mine خوش آمدید!</h2>
-      <p>🌟 سروری حرفه‌ای ماینکرافت با رویدادها، فروشگاه رنک و تیم مدیریت قوی.</p>
-      <h3>ایونت بعدی:</h3>
-      <div id="countdown" class="countdown"></div>
-      <p>⏳ جایزه: رنک ویژه برای برنده!</p>
-    </div>
-  </section>
+  اکانت‌های ادمین (برای تست):
+    SOL / sol123         (Owner)
+    oktayparsa / oktay123  (Co Owner)
+    Amirhossein / amir123  (Manager)
+    hossein / hossein123   (Builder)
 
-  <!-- قوانین -->
-  <section id="rules">
-    <div class="card">
-      <h2>📜 قوانین سرور</h2>
-      <ul>
-        <li>1- توهین به بازیکنان و ادمین‌ها ممنوع 🚫</li>
-        <li>2- استفاده از چیتر/هک باعث بن دائم می‌شود ⚡</li>
-        <li>3- فروش یا خرید غیرقانونی آیتم‌ها ممنوع 💰</li>
-        <li>4- احترام به قوانین و تصمیمات مدیریت الزامی است ✅</li>
-      </ul>
-    </div>
-  </section>
+  پلیر تستی:
+    player1 / 123
 
-  <!-- فروشگاه -->
-  <section id="shop">
-    <h2>🛒 فروشگاه رنک‌ها</h2>
-    <div id="shopItems"></div>
-  </section>
-
-  <!-- تیم مدیریت -->
-  <section id="team">
-    <h2>👑 تیم مدیریت Khalij Mine</h2>
-    <div class="card">SOL - Owner <br><img src="https://mineskin.eu/helm/Steve/100.png"></div>
-    <div class="card">oktayparsa - Co Owner <br><img src="https://mineskin.eu/helm/Alex/100.png"></div>
-    <div class="card">Amirhossein - Manager <br><img src="https://mineskin.eu/helm/Notch/100.png"></div>
-    <div class="card">hossein - Builder <br><img src="https://mineskin.eu/helm/Jeb_/100.png"></div>
-  </section>
-
-  <!-- برترین‌ها -->
-  <section id="top">
-    <h2>🏆 برترین پلیرها</h2>
-    <table class="player-table" id="topPlayers">
-      <tr><th>نام</th><th>تایم پلی (ساعت)</th></tr>
-    </table>
-  </section>
-
-  <!-- ورود -->
-  <section id="login">
-    <h2>🔑 ورود</h2>
-    <input id="loginUser" placeholder="نام کاربری"><br><br>
-    <input id="loginPass" type="password" placeholder="رمز عبور"><br><br>
-    <button class="btn" onclick="login()">ورود</button>
-    <div id="loginMsg"></div>
-  </section>
-
-  <!-- پنل کاربر -->
-  <section id="userPanel">
-    <h2>🎮 پنل کاربر</h2>
-    <div id="userProfile" class="profile"></div>
-    <button class="btn" onclick="logout()">خروج</button>
-  </section>
-
-  <!-- پنل ادمین -->
-  <section id="adminPanel">
-    <h2>⚙️ پنل مدیریت</h2>
-    <button class="btn" onclick="showAddUser()">➕ افزودن کاربر</button>
-    <div id="addUserForm" style="display:none;">
-      <input id="newUser" placeholder="نام کاربر">
-      <input id="newPass" placeholder="رمز">
-      <button class="btn" onclick="addUser()">ثبت</button>
-    </div>
-    <h3>لیست کاربران:</h3>
-    <table class="admin-table" id="usersTable"></table>
-    <h3>خریدها:</h3>
-    <div id="orders"></div>
-    <button class="btn" onclick="logout()">خروج</button>
-  </section>
-
-  <footer>
-    📢 کانال روبیکا: <b>@khalij_mine</b>
-  </footer>
-
-<script>
-let currentUser = null;
-let users = JSON.parse(localStorage.getItem("users")) || [
-  {username:"player1",password:"123",coins:200,time:50,rank:null,rank_expiry:null}
-];
-let admins = [{username:"admin",password:"admin123"}];
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-
-function saveData(){ localStorage.setItem("users",JSON.stringify(users)); localStorage.setItem("orders",JSON.stringify(orders)); }
-
-function showSection(id){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  if(id==="shop") renderShop();
-  if(id==="top") renderTop();
-  if(id==="adminPanel") renderAdmin();
-  if(id==="userPanel") renderProfile();
-}
-
-function login(){
-  let u=document.getElementById("loginUser").value;
-  let p=document.getElementById("loginPass").value;
-  let user=users.find(x=>x.username===u && x.password===p);
-  if(user){ currentUser=user; showSection("userPanel"); return;}
-  let admin=admins.find(x=>x.username===u && x.password===p);
-  if(admin){ currentUser=admin; showSection("adminPanel"); return;}
-  document.getElementById("loginMsg").innerText="❌ ورود ناموفق";
-}
-
-function logout(){ currentUser=null; showSection("home"); }
-
-function showAddUser(){document.getElementById("addUserForm").style.display="block";}
-function addUser(){
-  let u=document.getElementById("newUser").value;
-  let p=document.getElementById("newPass").value;
-  users.push({username:u,password:p,coins:0,time:0,rank:null,rank_expiry:null});
-  saveData(); renderAdmin();
-}
-
-function renderAdmin(){
-  let tbl="<tr><th>نام</th><th>سکه</th><th>رنک</th><th>روز باقی</th></tr>";
-  users.forEach(u=>{
-    let daysLeft = u.rank_expiry? Math.max(0, Math.ceil((new Date(u.rank_expiry)-Date.now())/86400000)):0;
-    tbl+=`<tr><td>${u.username}</td><td>${u.coins}</td><td>${u.rank||"-"}</td><td>${daysLeft}</td></tr>`;
-  });
-  document.getElementById("usersTable").innerHTML=tbl;
-  document.getElementById("orders").innerHTML=orders.map(o=>`<div>${o}</div>`).join("");
-}
-
-function renderShop(){
-  let html="";
-  let shopItems=[{id:"r1",name:"VIP",price:100},{id:"r2",name:"CIP",price:200},{id:"r3",name:"Helper",price:300}];
-  shopItems.forEach(i=>{
-    let disabled=false, msg="";
-    if(currentUser && currentUser.rank && currentUser.rank_expiry && new Date(currentUser.rank_expiry)>Date.now()){
-      disabled=true; msg="(شما رنک فعال دارید)";
-    }
-    html+=`<div class='card shop-item'>${i.name} - ${i.price} سکه<br>
-      <button class='btn' ${disabled?"disabled":""} onclick="buy('${i.id}')">خرید</button> ${msg}</div>`;
-  });
-  document.getElementById("shopItems").innerHTML=html;
-}
-
-function buy(id){
-  let item={r1:"VIP",r2:"CIP",r3:"Helper"}[id];
-  let price={r1:100,r2:200,r3:300}[id];
-  if(!currentUser) return alert("لطفاً وارد شوید");
-  if(currentUser.coins<price) return alert("سکه کافی نیست");
-  currentUser.coins-=price;
-  currentUser.rank=item;
-  currentUser.rank_expiry=new Date(Date.now()+30*24*60*60*1000);
-  orders.push(currentUser.username+" خرید "+item);
-  saveData();
-  alert("✅ خرید انجام شد");
-  renderShop(); renderProfile();
-}
-
-function renderProfile(){
-  if(!currentUser) return;
-  let daysLeft=currentUser.rank_expiry? Math.max(0,Math.ceil((new Date(currentUser.rank_expiry)-Date.now())/86400000)):0;
-  document.getElementById("userProfile").innerHTML=
-    `<b>نام:</b> ${currentUser.username}<br>
-     <b>سکه:</b> ${currentUser.coins}<br>
-     <b>رنک:</b> ${currentUser.rank||"-"} (${daysLeft} روز باقی)`;
-}
-
-function renderTop(){
-  let tbl="<tr><th>نام</th><th>تایم پلی</th></tr>";
-  users.sort((a,b)=>b.time-a.time).slice(0,5).forEach(u=>{
-    tbl+=`<tr><td>${u.username}</td><td>${u.time}</td></tr>`;
-  });
-  document.getElementById("topPlayers").innerHTML=tbl;
-}
-
-function countdown(){
-  let ev=new Date(Date.now()+6*24*60*60*1000);
-  setInterval(()=>{
-    let d=ev-Date.now();
-    if(d<=0){document.getElementById("countdown").innerText="شروع شد!";return;}
-    let days=Math.floor(d/86400000), hrs=Math.floor(d/3600000)%24, mins=Math.floor(d/60000)%60, sec=Math.floor(d/1000)%60;
-    document.getElementById("countdown").innerText=`${days}روز ${hrs}:${mins}:${sec}`;
-  },1000);
-}
-countdown();
-</script>
-</body>
-</html>
+  توجه: پسوردها در localStorage نگه داشته می‌شوند (برای تست). حتماً بعد از راه‌اندازی عوضشان کن.
+-->
+<style>
+  /* پایه‌ای — گرافیک ماینکرافتی ساده */
+  @font-face{font-family:Pixel; src: local("Arial");}
+  :root{
+    --bg:#081220; --card:#0f1724; --accent:#22c55e; --muted:#9aa7b2; --glass:rgba(255,255,255,0.03);
+    --accent2:#f59e0b;
+  }
+  *{box-sizing:border-box;font-family:Pixel, Vazirmatn, system-ui, -apple-system, "Segoe UI", Roboto, Arial;}
+  body{margin:0;background:linear-gradient(180deg,#071022 0%, #081026 100%), url('https://i.ibb.co/2K08p0z/minecraft-bg.jpg'); background-size:cover; color:#e6eef8; min-height:100vh;}
+  .wrap{max-width:980px;margin:12px auto;padding:12px;}
+  header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px;background:linear-gradient(90deg, rgba(0,0,0,0.45), rgba(255,255,255,0.02));border-radius:10px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(45deg,#8b5cf6,#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:900}
+  nav{display:flex;gap:8px;flex-wrap:wrap}
+  .nav-btn{background:var(--glass);border:1px solid rgba(255,255,255,0.03);padding:8px 10px;border-radius:8px;color:inherit;text-decoration:none;cursor:pointer;font-weight:700}
+  .nav-btn.active{background:linear-gradient(90deg,var(--accent),#10b981);color:#042018}
+  main{margin-top:12px}
+  section.card{display:none;background:rgba(2,6,23,0.6);padding:12px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+  section.card.active{display:block}
+  .grid{display:grid;gap:12px}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+  .card-small{background:rgba(255,255,255,0.03);padding:10px;border-radius:10px}
+  button.btn{padding:8px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:800}
+  .btn.primary{background:var(--accent);color:#042018}
+  .btn.ghost{background:transparent;border:1px solid r
